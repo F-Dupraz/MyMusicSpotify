@@ -17,7 +17,11 @@ router.get('/:id', (req, res, next) => {
   
   pool.query('SELECT songs.name AS name, artists.name AS artist FROM songs INNER JOIN artists ON songs.artistid = artists.id WHERE songs.id=$1', [songId])
     .then((result) => {
-      res.status(200).json(result.rows);
+      if(result.rowCount) {
+        res.status(200).json(result.rows);
+      } else {
+        res.status(404).json({ "Error 404:": "The given id doesn't exist." });
+      } 
     }).catch((err) => {
       res.status(500).json({Error: err});
     });
@@ -28,7 +32,11 @@ router.get('/name/:name', (req, res, next) => {
 
   pool.query('SELECT songs.name AS name, artists.name AS artist FROM songs INNER JOIN artists ON songs.artistid = artists.id WHERE songs.name=$1', [songName])
     .then((result) => {
-      res.status(200).json(result.rows);
+      if(result.rowCount) {
+        res.status(200).json(result.rows);
+      } else {
+        res.status(404).json({ "Error 404:": "The given name doesn't exist." });
+      } 
     }).catch((err) => {
       res.status(500).json({Error: err});
     });
@@ -39,7 +47,11 @@ router.get('/artist/:artist', (req, res, next) => {
 
   pool.query('SELECT songs.name AS name, artists.name AS artist FROM songs INNER JOIN artists ON songs.artistid = artists.id WHERE songs.artistid=$1', [songArtist])
     .then((result) => {
-      res.status(200).json(result.rows);
+      if(result.rowCount) {
+        res.status(200).json(result.rows);
+      } else {
+        res.status(404).json({ "Error 404:": "The given artist doesn't exist." });
+      } 
     }).catch((err) => {
       res.status(500).json({Error: err});
     });
@@ -61,7 +73,7 @@ router.delete('/:id', (req, res, next) => {
 
   pool.query('DELETE FROM songs WHERE id=$1', [songId])
     .then((result) => {
-      res.status(201).json(result);
+      res.status(204).json(result);
     }).catch((err) => {
       res.status(500).json(err);
     });

@@ -1,6 +1,5 @@
 {
   "moduleFileExtensions": ["js"],
   "rootDir": ".",
-  "testEnvironment": "node",
-  "textEnvironment": ".test.js$"
+  "testEnvironment": "node"
 }

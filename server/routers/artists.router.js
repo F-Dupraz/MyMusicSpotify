@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
     .then((result) => {
       res.status(200).json(result.rows);
     }).catch((err) => {
-      res.status(500).json({Error: err});
+      res.status(500).json(err);
     });
 });
 
@@ -17,9 +17,13 @@ router.get('/:id', (req, res, next) => {
   
   pool.query('SELECT * FROM artists WHERE id=$1', [artistId])
     .then((result) => {
-      res.status(200).json(result.rows);
+      if(result.rowCount) {
+        res.status(200).json(result.rows);
+      } else {
+        res.status(404).json({ "Error 404:": "The given id doesn't exist." });
+      } 
     }).catch((err) => {
-      res.status(500).json({Error: err});
+      res.status(500).json(err);
     });
 });
 
@@ -28,9 +32,13 @@ router.get('/name/:name', (req, res, next) => {
 
   pool.query('SELECT * FROM artists WHERE name=$1', [artistName])
     .then((result) => {
-      res.status(200).json(result.rows);
+      if(result.rowCount) {
+        res.status(200).json(result.rows);
+      } else {
+        res.status(404).json({ "Error 404:": "The given name doesn't exist." });
+      } 
     }).catch((err) => {
-      res.status(500).json({Error: err});
+      res.status(500).json(err);
     });
 });
 
@@ -50,7 +58,7 @@ router.delete('/:id', (req, res, next) => {
 
   pool.query('DELETE FROM artists WHERE id=$1', [artistId])
     .then((result) => {
-      res.status(201).json(result.rows);
+      res.status(204).json(result.rows);
     }).catch((err) => {
       res.status(500).json(err);
     });
