@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
     .then((result) => {
       res.status(200).json(result.rows);
     }).catch((err) => {
-      res.status(500).json({Error: err});
+      res.status(500).json(err);
     });
 });
 
@@ -23,7 +23,7 @@ router.get('/:id', (req, res, next) => {
         res.status(404).json({ "Error 404:": "The given id doesn't exist." });
       } 
     }).catch((err) => {
-      res.status(500).json({Error: err});
+      res.status(500).json(err);
     });
 });
 
